@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://snowball001"]
+
+[ext_resource type="Script" path="res://scripts/snowball.gd" id="1_script"]
+[ext_resource type="PhysicsMaterial" path="res://resources/physics/snowball_physics.tres" id="2_phys"]
+[ext_resource type="Material" path="res://resources/materials/snowball_mat.tres" id="3_mat"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ball"]
+radius = 0.12
+height = 0.24
+radial_segments = 24
+rings = 12
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ball"]
+radius = 0.12
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_break"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.5
+angular_velocity_min = -8.0
+angular_velocity_max = 8.0
+gravity = Vector3(0, -6, 0)
+scale_min = 0.03
+scale_max = 0.08
+color = Color(0.95, 0.97, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_particle"]
+radius = 1.0
+height = 2.0
+radial_segments = 8
+rings = 4
+
+[node name="Snowball" type="RigidBody3D" groups=["snowball"]]
+collision_layer = 4
+collision_mask = 11
+mass = 0.35
+physics_material_override = ExtResource("2_phys")
+gravity_scale = 1.0
+continuous_cd = true
+script = ExtResource("1_script")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ball")
+surface_material_override/0 = ExtResource("3_mat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ball")
+
+[node name="BreakParticles" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 28
+lifetime = 0.55
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_break")
+draw_pass_1 = SubResource("SphereMesh_particle")
