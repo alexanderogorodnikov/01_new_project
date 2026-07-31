@@ -36,6 +36,10 @@ func _physics_process(delta: float) -> void:
 		_break_apart()
 
 
+func is_in_flight() -> bool:
+	return _thrown and not _held
+
+
 func attach_to(parent: Node3D) -> void:
 	_held = true
 	_thrown = false
@@ -90,6 +94,9 @@ func _on_body_entered(body: Node) -> void:
 		var target_id: StringName = &"unknown"
 		if "damage_id" in body:
 			target_id = body.damage_id
+		# Ignore self-hits / friendly same-id collisions.
+		if target_id == owner_id:
+			return
 		GameState.apply_damage(target_id, damage, owner_id)
 		if body.has_method("on_snowball_hit"):
 			body.on_snowball_hit(damage, owner_id)

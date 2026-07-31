@@ -33,8 +33,7 @@ func _ready() -> void:
 	add_to_group("damageable")
 	add_to_group("player")
 	health = max_health
-	GameState.max_health = max_health
-	GameState.player_health = health
+	GameState.register_fighter(damage_id, max_health)
 
 	if pc_snow:
 		pc_snow.camera = pc_camera
