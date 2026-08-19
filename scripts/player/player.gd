@@ -17,6 +17,7 @@ var health: float = 100.0
 var _pc_yaw: float = 0.0
 var _pc_pitch: float = 0.0
 
+@onready var visual: CharacterVisual = $Visual
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var pc_root: Node3D = $PCMode
 @onready var pc_camera: Camera3D = $PCMode/Camera3D
@@ -26,7 +27,6 @@ var _pc_pitch: float = 0.0
 @onready var vr_camera: XRCamera3D = $VRMode/XRCamera3D
 @onready var left_controller: XRController3D = $VRMode/LeftHand
 @onready var right_controller: XRController3D = $VRMode/RightHand
-@onready var body_mesh: MeshInstance3D = $BodyMesh
 
 
 func _ready() -> void:
@@ -76,15 +76,9 @@ func _physics_process(delta: float) -> void:
 
 
 func on_snowball_hit(_damage: float, _attacker_id: StringName) -> void:
-	# Health is owned by GameState; this only handles local feedback.
 	health = GameState.player_health
-	if body_mesh and body_mesh.material_override is StandardMaterial3D:
-		var mat := body_mesh.material_override as StandardMaterial3D
-		var original := mat.albedo_color
-		mat.albedo_color = Color(1.0, 0.45, 0.45)
-		await get_tree().create_timer(0.12).timeout
-		if is_instance_valid(mat):
-			mat.albedo_color = original
+	if visual:
+		await visual.flash_hit()
 
 
 func _on_xr_session_changed(active: bool) -> void:
@@ -96,8 +90,9 @@ func _apply_mode(vr: bool) -> void:
 	pc_camera.current = not vr
 	vr_origin.visible = vr
 	vr_camera.current = vr
-	body_mesh.visible = not vr
-	# Keep a capsule for locomotion in both modes.
+	if visual:
+		# Hide full body in first-person / VR; keep capsule collision.
+		visual.visible = false
 	collision_shape.disabled = false
 	mode_changed.emit(vr)
 

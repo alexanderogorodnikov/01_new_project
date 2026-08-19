@@ -27,10 +27,8 @@ var _throw_cd: float = 1.0
 var _state_time: float = 0.0
 var _patrol_point: Vector3 = Vector3.ZERO
 var _dodge_dir: Vector3 = Vector3.ZERO
-var _base_color: Color = Color(0.22, 0.38, 0.55)
 
-@onready var body_mesh: MeshInstance3D = $BodyMesh
-@onready var hat_mesh: MeshInstance3D = $HatMesh
+@onready var visual: CharacterVisual = $Visual
 @onready var throw_point: Marker3D = $ThrowPoint
 @onready var threat_area: Area3D = $ThreatSensor
 @onready var nameplate: Label3D = $Nameplate
@@ -41,11 +39,6 @@ func _ready() -> void:
 	add_to_group("bot")
 	health = max_health
 	GameState.register_fighter(damage_id, max_health)
-	if body_mesh and body_mesh.material_override is StandardMaterial3D:
-		var shared := body_mesh.material_override as StandardMaterial3D
-		var mat := shared.duplicate() as StandardMaterial3D
-		body_mesh.material_override = mat
-		_base_color = mat.albedo_color
 	_pick_patrol_point()
 	_resolve_target()
 	if threat_area:
@@ -296,13 +289,8 @@ func _clamp_to_arena() -> void:
 
 
 func _flash_hit() -> void:
-	if body_mesh == null or not (body_mesh.material_override is StandardMaterial3D):
-		return
-	var mat := body_mesh.material_override as StandardMaterial3D
-	mat.albedo_color = Color(1.0, 0.4, 0.4)
-	await get_tree().create_timer(0.12).timeout
-	if is_instance_valid(mat):
-		mat.albedo_color = _base_color
+	if visual:
+		await visual.flash_hit()
 
 
 func _respawn() -> void:

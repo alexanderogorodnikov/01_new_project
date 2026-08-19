@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://snowball001"]
+[gd_scene load_steps=9 format=3 uid="uid://snowball001"]
 
 [ext_resource type="Script" path="res://scripts/snowball.gd" id="1_script"]
 [ext_resource type="PhysicsMaterial" path="res://resources/physics/snowball_physics.tres" id="2_phys"]
 [ext_resource type="Material" path="res://resources/materials/snowball_mat.tres" id="3_mat"]
+[ext_resource type="Script" path="res://scripts/models/snowball_lumps.gd" id="4_lumps"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ball"]
 radius = 0.12
@@ -43,6 +44,8 @@ script = ExtResource("1_script")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_ball")
 surface_material_override/0 = ExtResource("3_mat")
+script = ExtResource("4_lumps")
+lump_count = 6
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_ball")
