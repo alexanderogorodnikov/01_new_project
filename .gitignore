@@ -22,5 +22,5 @@ data_*/
 npm-debug.log*
 node_modules/
 
-# Local demo captures
-demo_bot.png
+# Local demo captures (root only; docs/ screenshots are tracked)
+/demo_bot.png
