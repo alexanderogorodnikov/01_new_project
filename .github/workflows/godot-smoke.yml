@@ -1,12 +1,12 @@
-name: Godot Project Check
+name: Godot Smoke Test
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, "cursor/**"]
+  pull_request:
 
 jobs:
-  check:
+  smoke:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,9 +18,10 @@ jobs:
           unzip -o /tmp/godot.zip -d "$HOME/godot"
           echo "$HOME/godot" >> "$GITHUB_PATH"
           ln -sf "$HOME/godot/Godot_v4.4.1-stable_linux.x86_64" "$HOME/godot/godot"
+          "$HOME/godot/godot" --version
 
-      - name: Import and quit
-        run: godot --headless --xr-mode off --path . --quit-after 30
+      - name: Import project
+        run: godot --headless --xr-mode off --path . --import
 
-      - name: Smoke test
+      - name: Run smoke test
         run: godot --headless --xr-mode off --path . -s res://scripts/tools/smoke_test.gd

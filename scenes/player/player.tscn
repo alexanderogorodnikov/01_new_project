@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://player001"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/player/pc_snow_interact.gd" id="2_pc_snow"]
+[ext_resource type="Script" path="res://scripts/player/hand_snow_interact.gd" id="3_hand"]
+[ext_resource type="Script" path="res://scripts/models/character_visual.gd" id="4_visual"]
+[ext_resource type="Script" path="res://scripts/models/mitt_hand.gd" id="5_mitt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.28
+height = 1.7
+
+[node name="Player" type="CharacterBody3D" groups=["player", "damageable"]]
+collision_layer = 2
+collision_mask = 1
+floor_stop_on_slope = true
+floor_max_angle = 0.785398
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Visual" type="Node3D" parent="."]
+script = ExtResource("4_visual")
+palette = "player"
+show_face = true
+
+[node name="PCMode" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="PCMode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+current = true
+fov = 75.0
+near = 0.05
+far = 200.0
+
+[node name="HoldPoint" type="Marker3D" parent="PCMode/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, -0.12, -0.45)
+
+[node name="PCSnowInteract" type="Node" parent="PCMode"]
+script = ExtResource("2_pc_snow")
+
+[node name="VRMode" type="XROrigin3D" parent="."]
+visible = false
+
+[node name="XRCamera3D" type="XRCamera3D" parent="VRMode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+current = false
+near = 0.05
+far = 200.0
+
+[node name="LeftHand" type="XRController3D" parent="VRMode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.2, -0.25)
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="Mitt" type="Node3D" parent="VRMode/LeftHand"]
+script = ExtResource("5_mitt")
+
+[node name="HoldPoint" type="Marker3D" parent="VRMode/LeftHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+
+[node name="SnowProbe" type="RayCast3D" parent="VRMode/LeftHand"]
+target_position = Vector3(0, -0.7, 0)
+collision_mask = 9
+collide_with_areas = false
+
+[node name="HandSnowInteract" type="Node3D" parent="VRMode/LeftHand"]
+script = ExtResource("3_hand")
+
+[node name="RightHand" type="XRController3D" parent="VRMode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.2, -0.25)
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="Mitt" type="Node3D" parent="VRMode/RightHand"]
+script = ExtResource("5_mitt")
+
+[node name="HoldPoint" type="Marker3D" parent="VRMode/RightHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+
+[node name="SnowProbe" type="RayCast3D" parent="VRMode/RightHand"]
+target_position = Vector3(0, -0.7, 0)
+collision_mask = 9
+collide_with_areas = false
+
+[node name="HandSnowInteract" type="Node3D" parent="VRMode/RightHand"]
+script = ExtResource("3_hand")

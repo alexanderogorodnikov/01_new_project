@@ -1,0 +1,191 @@
+[gd_scene load_steps=10 format=3 uid="uid://arena001"]
+
+[ext_resource type="Script" path="res://scripts/arena/arena.gd" id="1_arena"]
+[ext_resource type="Material" path="res://resources/materials/snow_ground.tres" id="2_snow"]
+[ext_resource type="Material" path="res://resources/materials/snow_wall.tres" id="3_wall"]
+[ext_resource type="Script" path="res://scripts/models/snow_bank.gd" id="4_bank"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(40, 0.4, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(40, 0.4, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_long"]
+size = Vector3(40.8, 1.6, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_long"]
+size = Vector3(40.8, 2.2, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_short"]
+size = Vector3(0.55, 1.6, 40.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_short"]
+size = Vector3(0.7, 2.2, 40.8)
+
+[sub_resource type="SphereMesh" id="SphereMesh_cap"]
+radius = 0.45
+height = 0.55
+radial_segments = 14
+rings = 7
+
+[node name="Arena" type="Node3D"]
+script = ExtResource("1_arena")
+arena_half_size = 20.0
+
+[node name="Ground" type="StaticBody3D" parent="." groups=["world", "snow_surface"]]
+collision_layer = 9
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ground")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="Collision" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Boundaries" type="Node3D" parent="."]
+
+[node name="WallNorth" type="StaticBody3D" parent="Boundaries" groups=["world"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -20.2)
+collision_layer = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="Boundaries/WallNorth"]
+mesh = SubResource("BoxMesh_wall_long")
+surface_material_override/0 = ExtResource("3_wall")
+
+[node name="CapL" type="MeshInstance3D" parent="Boundaries/WallNorth"]
+transform = Transform3D(1.8, 0, 0, 0, 1, 0, 0, 0, 1.2, -8, 0.95, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapC" type="MeshInstance3D" parent="Boundaries/WallNorth"]
+transform = Transform3D(2.2, 0, 0, 0, 1.1, 0, 0, 0, 1.3, 0, 1.0, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapR" type="MeshInstance3D" parent="Boundaries/WallNorth"]
+transform = Transform3D(1.8, 0, 0, 0, 1, 0, 0, 0, 1.2, 8, 0.95, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="Collision" type="CollisionShape3D" parent="Boundaries/WallNorth"]
+shape = SubResource("BoxShape3D_wall_long")
+
+[node name="WallSouth" type="StaticBody3D" parent="Boundaries" groups=["world"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 20.2)
+collision_layer = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="Boundaries/WallSouth"]
+mesh = SubResource("BoxMesh_wall_long")
+surface_material_override/0 = ExtResource("3_wall")
+
+[node name="CapL" type="MeshInstance3D" parent="Boundaries/WallSouth"]
+transform = Transform3D(1.8, 0, 0, 0, 1, 0, 0, 0, 1.2, -8, 0.95, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapC" type="MeshInstance3D" parent="Boundaries/WallSouth"]
+transform = Transform3D(2.2, 0, 0, 0, 1.1, 0, 0, 0, 1.3, 0, 1.0, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapR" type="MeshInstance3D" parent="Boundaries/WallSouth"]
+transform = Transform3D(1.8, 0, 0, 0, 1, 0, 0, 0, 1.2, 8, 0.95, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="Collision" type="CollisionShape3D" parent="Boundaries/WallSouth"]
+shape = SubResource("BoxShape3D_wall_long")
+
+[node name="WallWest" type="StaticBody3D" parent="Boundaries" groups=["world"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2, 0.9, 0)
+collision_layer = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="Boundaries/WallWest"]
+mesh = SubResource("BoxMesh_wall_short")
+surface_material_override/0 = ExtResource("3_wall")
+
+[node name="CapL" type="MeshInstance3D" parent="Boundaries/WallWest"]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.8, 0, 0.95, -8)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapC" type="MeshInstance3D" parent="Boundaries/WallWest"]
+transform = Transform3D(1.3, 0, 0, 0, 1.1, 0, 0, 0, 2.2, 0, 1.0, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapR" type="MeshInstance3D" parent="Boundaries/WallWest"]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.8, 0, 0.95, 8)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="Collision" type="CollisionShape3D" parent="Boundaries/WallWest"]
+shape = SubResource("BoxShape3D_wall_short")
+
+[node name="WallEast" type="StaticBody3D" parent="Boundaries" groups=["world"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.2, 0.9, 0)
+collision_layer = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="Boundaries/WallEast"]
+mesh = SubResource("BoxMesh_wall_short")
+surface_material_override/0 = ExtResource("3_wall")
+
+[node name="CapL" type="MeshInstance3D" parent="Boundaries/WallEast"]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.8, 0, 0.95, -8)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapC" type="MeshInstance3D" parent="Boundaries/WallEast"]
+transform = Transform3D(1.3, 0, 0, 0, 1.1, 0, 0, 0, 2.2, 0, 1.0, 0)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="CapR" type="MeshInstance3D" parent="Boundaries/WallEast"]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1.8, 0, 0.95, 8)
+mesh = SubResource("SphereMesh_cap")
+surface_material_override/0 = ExtResource("2_snow")
+
+[node name="Collision" type="CollisionShape3D" parent="Boundaries/WallEast"]
+shape = SubResource("BoxShape3D_wall_short")
+
+[node name="Cover" type="Node3D" parent="."]
+
+[node name="MoundA" type="StaticBody3D" parent="Cover" groups=["world", "snow_surface"]]
+transform = Transform3D(1.4, 0, 0, 0, 1.2, 0, 0, 0, 1.3, -6, 0.15, -4)
+collision_layer = 9
+
+[node name="Bank" type="Node3D" parent="Cover/MoundA"]
+script = ExtResource("4_bank")
+snow_material = ExtResource("2_snow")
+
+[node name="MoundB" type="StaticBody3D" parent="Cover" groups=["world", "snow_surface"]]
+transform = Transform3D(1.2, 0, 0.4, 0, 1.15, 0, -0.35, 0, 1.35, 7, 0.15, 5)
+collision_layer = 9
+
+[node name="Bank" type="Node3D" parent="Cover/MoundB"]
+script = ExtResource("4_bank")
+snow_material = ExtResource("2_snow")
+
+[node name="MoundC" type="StaticBody3D" parent="Cover" groups=["world", "snow_surface"]]
+transform = Transform3D(0.9, 0, -0.9, 0, 1.0, 0, 0.9, 0, 0.9, 0, 0.12, -9)
+collision_layer = 9
+
+[node name="Bank" type="Node3D" parent="Cover/MoundC"]
+script = ExtResource("4_bank")
+snow_material = ExtResource("2_snow")
+
+[node name="MoundD" type="StaticBody3D" parent="Cover" groups=["world", "snow_surface"]]
+transform = Transform3D(1.1, 0, 0, 0, 0.95, 0, 0, 0, 1.1, -10, 0.12, 8)
+collision_layer = 9
+
+[node name="Bank" type="Node3D" parent="Cover/MoundD"]
+script = ExtResource("4_bank")
+snow_material = ExtResource("2_snow")
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 12)
+
+[node name="BotSpawn" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.2, -12)

@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://bot001"]
+
+[ext_resource type="Script" path="res://scripts/bot/bot.gd" id="1_bot"]
+[ext_resource type="Script" path="res://scripts/models/character_visual.gd" id="2_visual"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.32
+height = 1.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_threat"]
+radius = 3.2
+
+[node name="Bot" type="CharacterBody3D" groups=["bot", "damageable"]]
+collision_layer = 2
+collision_mask = 1
+floor_stop_on_slope = true
+script = ExtResource("1_bot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Visual" type="Node3D" parent="."]
+script = ExtResource("2_visual")
+palette = "bot"
+show_face = true
+
+[node name="ThrowPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1.35, -0.65)
+
+[node name="ThreatSensor" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ThreatSensor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("SphereShape3D_threat")
+
+[node name="Nameplate" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0)
+pixel_size = 0.012
+billboard = 1
+text = "Бот · патруль"
+font_size = 28
+outline_size = 6
+modulate = Color(0.1, 0.15, 0.22, 1)
+outline_modulate = Color(0.95, 0.97, 1, 0.85)
