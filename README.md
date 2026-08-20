@@ -51,6 +51,17 @@
 - Кидает снежки в игрока с простым lead-прицеливанием
 - HP игрока и бота на HUD, toast при попадании
 
+## Демо-видео
+
+Короткий (~10с) клип симуляции боя: [`docs/demo_gameplay.mp4`](docs/demo_gameplay.mp4)
+
+Переснять:
+```bash
+godot --xr-mode off --path . --fixed-fps 30 --write-movie /tmp/demo_gameplay.avi \
+  -s res://scripts/tools/demo_video.gd
+ffmpeg -y -i /tmp/demo_gameplay.avi -c:v libx264 -pix_fmt yuv420p docs/demo_gameplay.mp4
+```
+
 ## Демо-картинка
 
 ```bash
