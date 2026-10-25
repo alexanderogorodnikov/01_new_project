@@ -26,8 +26,10 @@
 
 Без шлема игра автоматически стартует в ПК-режиме.
 
-**Meta Quest 2 (через Quest Link / Air Link):** см. пошаговую инструкцию  
-[`docs/QUEST2_SETUP.md`](docs/QUEST2_SETUP.md)
+**Meta Quest 3 (Quest Link / Air Link, English):**  
+[`docs/QUEST3_SETUP.md`](docs/QUEST3_SETUP.md)
+
+**Meta Quest 2:** [`docs/QUEST2_SETUP.md`](docs/QUEST2_SETUP.md)
 
 ## Управление
 
